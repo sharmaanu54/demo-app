@@ -3,10 +3,11 @@ version: 0.2
 phases:
   install:
     commands:
+      - echo Checking Amazon Linux Version
+      - cat /etc/os-release
       - echo Installing nginx
-      - sudo apt-get update
-      - sudo apt-get remove -y nginx
-      - sudo apt-get install -y nginx
+      - sudo dnf update -y  # Use dnf instead of apt-get
+      - sudo dnf install -y nginx  # Correct package manager for Amazon Linux 2023
   pre_build:
     commands:
       - echo Validating nginx configuration
@@ -18,9 +19,9 @@ phases:
       - sudo systemctl enable nginx
   build:
     commands:
-      - echo Build phase started on date
+      - echo Build phase started on $(date)
       - echo Adding files to nginx root directory
-      - sudo cp index.html /var/www/html/
+      - sudo cp index.html /usr/share/nginx/html/  # Correct Nginx root directory for Amazon Linux
   post_build:
     commands:
       - echo Checking nginx service status
