@@ -17,8 +17,8 @@ phases:
     commands:
       - echo "Listing current directory contents"
       - sudo ls -l  # Ensure index.html is present in the current directory
-      - echo "Checking /var/www/html/ directory"
-      - sudo ls -ld /var/www/html/  # Verify the target directory
+      # - echo "Checking /var/www/html/ directory"
+      # - sudo ls -ld /var/www/html/  # Verify the target directory
       - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
       - sudo cp index.html /var/www/html/
   post_build:
