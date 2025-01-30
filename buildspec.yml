@@ -11,8 +11,8 @@ phases:
   pre_build:
     commands:
       - echo Starting NGINX service
-      - sudo systemctl start nginx
       - sudo systemctl enable nginx
+      - sudo systemctl start nginx
   build:
     commands:
       - echo Build started on date
