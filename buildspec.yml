@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo Installing NGINX
+      - sudo amazon-linux-extras enable nginx
+      - sudo yum install -y nginx
+  pre_build:
+    commands:
+      - echo Starting NGINX service
+      - sudo systemctl start nginx
+      - sudo systemctl enable nginx
+  build:
+    commands:
+      - echo Build started on date
+      - cp index.html /var/www/html/   
+  post_build:
+    commands:
+      - echo Configuring NGINX
+artifacts:
+  files:
+      - /var/www/html/index.html
