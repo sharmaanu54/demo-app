@@ -4,14 +4,15 @@ phases:
   install:
     commands:
       - echo Checking Amazon Linux Version
-      - cat /etc/os-release  # To confirm if it's Amazon Linux 2
-      - echo Installing nginx
-      - sudo yum update -y  # Using yum for Amazon Linux 2
-      - sudo yum install -y nginx  # Install nginx with yum for Amazon Linux 2
+      - cat /etc/os-release  # Confirm the version of Amazon Linux
+      - echo Installing NGINX
+      - sudo yum update -y  # Update the system
+      - sudo amazon-linux-extras enable nginx1 # Enable the Nginx package from Amazon Linux Extras
+      - sudo yum install -y nginx  # Install Nginx after enabling it from Amazon Linux Extras
   pre_build:
     commands:
       - echo Validating nginx configuration
-      - sudo nginx -t  # Test nginx configuration
+      - sudo nginx -t  # Test Nginx configuration
       - echo Checking for port conflicts
       - sudo lsof -i :80 || echo "No conflicts detected"
       - echo Starting nginx service
@@ -25,7 +26,7 @@ phases:
   post_build:
     commands:
       - echo Checking nginx service status
-      - sudo systemctl status nginx || sudo journalctl -u nginx  # Check nginx status in case of issues
+      - sudo systemctl status nginx || sudo journalctl -u nginx  # Check nginx status if any issue occurs
 artifacts:
   files:
     - index.html  # Include this file in the build artifacts
