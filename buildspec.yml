@@ -27,6 +27,7 @@ phases:
       - sudo systemctl status nginx || sudo journalctl -u nginx
 artifacts:
   files:
-    - index.html
-  name: my-build-output
-  discard-paths: yes
+    - output/**  # Include all files in the output directory
+  name: artifact.zip  # Creates a ZIP file for S3 upload
+  base-directory: output  # Ensures files inside "output/" are included
+  discard-paths: yes  # Avoid keeping the "output/" folder in the ZIP
