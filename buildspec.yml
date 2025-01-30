@@ -15,8 +15,11 @@ phases:
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-      - echo Build started on date
-      - ls -l index.html  # Verify the file exists
+      - echo "Listing current directory contents"
+      - ls -l  # Ensure index.html is present in the current directory
+      - echo "Checking /var/www/html/ directory"
+      - ls -ld /var/www/html/  # Verify the target directory
+      - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
       - sudo cp index.html /var/www/html/
   post_build:
     commands:
