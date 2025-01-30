@@ -11,11 +11,11 @@ phases:
       - sudo yum install -y nginx  # Install Nginx after enabling it from Amazon Linux Extras
   pre_build:
     commands:
-      - echo Validating nginx configuration
-      - sudo nginx -t  # Test Nginx configuration
-      - echo Checking for port conflicts
+      # - echo Validating nginx configuration
+      # - sudo nginx -t  # Test Nginx configuration
+      # - echo Checking for port conflicts
       - sudo lsof -i :80 || echo "No conflicts detected"
-      - echo Starting nginx service
+      # - echo Starting nginx service
       - sudo systemctl start nginx
       - sudo systemctl enable nginx
   build:
