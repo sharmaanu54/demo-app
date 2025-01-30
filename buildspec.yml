@@ -10,9 +10,9 @@ phases:
       - sudo yum install -y nginx
   pre_build:
     commands:
-      - echo Starting NGINX service
+      echo Starting NGINX service
       - sudo systemctl enable nginx
-      - sudo systemctl start nginx
+      - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
       - echo Build started on date
