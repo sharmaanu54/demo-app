@@ -3,9 +3,11 @@ version: 0.2
 phases:
   install:
     commands:
+      - cat /etc/os-release
       - echo Installing NGINX
       - sudo amazon-linux-extras enable nginx
-      - sudo yum install -y nginx
+      - sudo dnf install -y nginx
+      
   pre_build:
     commands:
       - echo Starting NGINX service
