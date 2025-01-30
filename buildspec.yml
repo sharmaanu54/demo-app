@@ -3,9 +3,10 @@ version: 0.2
 phases:
   install:
     commands:
+      - echo Installing NGINX
+      - sudo yum clean all
       - sudo yum update -y
-      # - echo Installing NGINX
-      # - sudo amazon-linux-extras enable nginx
+      - sudo amazon-linux-extras enable nginx1
       - sudo yum install -y nginx
   pre_build:
     commands:
