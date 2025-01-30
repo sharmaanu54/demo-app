@@ -3,35 +3,21 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing nginx
-      - sudo apt-get update
-      - sudo apt-get remove -y nginx
-      - sudo apt-get install -y nginx
-  # pre_build:
-  #   commands:
-  #     - echo Validating nginx configuration
-  #     - sudo nginx -t
-  #     - echo Checking for port conflicts
-  #     - sudo lsof -i :80 || echo "No conflicts detected"
-  #     - echo Starting nginx service
-  #     - sudo systemctl start nginx
-  #     - sudo systemctl enable nginx
+      - echo Installing NGINX
+      - sudo amazon-linux-extras enable nginx
+      - sudo yum install -y nginx
+  pre_build:
+    commands:
+      - echo Starting NGINX service
+      - sudo systemctl start nginx
+      - sudo systemctl enable nginx
   build:
     commands:
-      - echo Build phase started on date
-      - echo Adding files to nginx root directory
-      - sudo cp index.html /var/www/html/
-      # Ensure the output directory exists and files are created
-      - mkdir -p output
-      - cp /var/www/html/index.html output/
+      - echo Build started on date
+      - cp index.html /var/www/html/
   post_build:
     commands:
-      - echo Checking nginx service status
-      - sudo systemctl status nginx || sudo journalctl -u nginx
-
+      - echo Configuring NGINX
 artifacts:
   files:
-    - output/**  # Include all files in the output directory
-  name: artifact.zip  # The name of the artifact will be artifact.zip
-  base-directory: output  # Specifies files inside "output/" will be included
-  discard-paths: yes  # Avoid keeping the "output/" folder structure in the ZIP
+      - /var/www/html/index.html
