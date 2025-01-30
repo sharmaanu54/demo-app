@@ -4,14 +4,14 @@ phases:
   install:
     commands:
       - echo Checking Amazon Linux Version
-      - cat /etc/os-release
+      - cat /etc/os-release  # To confirm if it's Amazon Linux 2
       - echo Installing nginx
-      - sudo dnf update -y  # Use dnf instead of apt-get
-      - sudo dnf install -y nginx  # Correct package manager for Amazon Linux 2023
+      - sudo yum update -y  # Using yum for Amazon Linux 2
+      - sudo yum install -y nginx  # Install nginx with yum for Amazon Linux 2
   pre_build:
     commands:
       - echo Validating nginx configuration
-      - sudo nginx -t
+      - sudo nginx -t  # Test nginx configuration
       - echo Checking for port conflicts
       - sudo lsof -i :80 || echo "No conflicts detected"
       - echo Starting nginx service
@@ -21,11 +21,11 @@ phases:
     commands:
       - echo Build phase started on $(date)
       - echo Adding files to nginx root directory
-      - sudo cp index.html /usr/share/nginx/html/  # Correct Nginx root directory for Amazon Linux
+      - sudo cp index.html /usr/share/nginx/html/  # Nginx root directory in Amazon Linux 2
   post_build:
     commands:
       - echo Checking nginx service status
-      - sudo systemctl status nginx || sudo journalctl -u nginx
+      - sudo systemctl status nginx || sudo journalctl -u nginx  # Check nginx status in case of issues
 artifacts:
   files:
-    - index.html
+    - index.html  # Include this file in the build artifacts
