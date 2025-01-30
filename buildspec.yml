@@ -7,15 +7,15 @@ phases:
       - sudo apt-get update
       - sudo apt-get remove -y nginx
       - sudo apt-get install -y nginx
-  pre_build:
-    commands:
-      - echo Validating nginx configuration
-      - sudo nginx -t
-      - echo Checking for port conflicts
-      - sudo lsof -i :80 || echo "No conflicts detected"
-      - echo Starting nginx service
-      - sudo systemctl start nginx
-      - sudo systemctl enable nginx
+  # pre_build:
+  #   commands:
+  #     - echo Validating nginx configuration
+  #     - sudo nginx -t
+  #     - echo Checking for port conflicts
+  #     - sudo lsof -i :80 || echo "No conflicts detected"
+  #     - echo Starting nginx service
+  #     - sudo systemctl start nginx
+  #     - sudo systemctl enable nginx
   build:
     commands:
       - echo Build phase started on date
