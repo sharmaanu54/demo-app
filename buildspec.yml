@@ -1,29 +1,30 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - echo Installing NGINX
-      - sudo yum clean all
-      - sudo yum update -y
-      - sudo amazon-linux-extras enable nginx1
-      - sudo yum install -y nginx
-  pre_build:
-    commands:
-      echo Starting NGINX service
-      - sudo systemctl enable nginx
-      - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
+  # install:
+  #   commands:
+  #     - echo Installing NGINX
+  #     - sudo yum clean all
+  #     - sudo yum update -y
+  #     - sudo amazon-linux-extras enable nginx1
+  #     - sudo yum install -y nginx
+  # pre_build:
+    # commands:
+    #   echo Starting NGINX service
+    #   - sudo systemctl enable nginx
+    #   - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-      - echo "Listing current directory contents"
-      - sudo ls -l  # Ensure index.html is present in the current directory
-      # - echo "Checking /var/www/html/ directory"
-      # - sudo ls -ld /var/www/html/  # Verify the target directory
-      - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
-      - sudo cp index.html /var/www/html/
+      - ls -l /var/www/html 
+      # - echo "Listing current directory contents"
+      # - sudo ls -l  # Ensure index.html is present in the current directory
+      # # - echo "Checking /var/www/html/ directory"
+      # # - sudo ls -ld /var/www/html/  # Verify the target directory
+      # - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
+      # - sudo cp index.html /var/www/html/
   post_build:
-    commands:
-      - echo Configuring NGINX
+    # commands:
+    #   - echo Configuring NGINX
 artifacts:
   files:
     - /var/www/html/index.html
