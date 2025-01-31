@@ -21,7 +21,9 @@ phases:
       # - sudo ls -ld /var/www/html/  # Verify the target directory
       - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
       - sudo cp index.html /var/www/html/
-      - ls -l /var/www/html 
+      - ls -l /var/www/html
+      - echo "Checking /var/www/html contents..."
+      - ls -l /var/www/html
   post_build:
     commands:
       - echo Configuring NGINX
