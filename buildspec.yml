@@ -32,7 +32,7 @@ artifacts:
      - index.html
      - appspec.yml
      - scripts/**  # Ensure all files inside scripts/ are included
-  name: MyArtifact.zip
+  name: artifact.zip
   discard-paths: yes   # This ensures files are not stored with subdirectories in S3
 
   # Specify the S3 path where the artifact.zip will be uploaded
