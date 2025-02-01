@@ -10,14 +10,13 @@ phases:
       - sudo yum install -y nginx
   pre_build:
     commands:
-      - echo "Checking NGINX status..."
-      - sudo systemctl status nginx || true
-      - echo "Checking NGINX logs..."
-      - sudo journalctl -xeu nginx || true
-      - echo "Checking NGINX configuration..."
-      - sudo nginx -t || true
-      - echo "Restarting NGINX..."
-      - sudo systemctl restart nginx
+      pre_build:
+  commands:
+    - echo "Checking NGINX configuration..."
+    - sudo nginx -t || true  # Validate config
+    - echo "Starting NGINX..."
+    - sudo nginx || true  # Start NGINX manually
+
   build:
     commands:
       - echo "Creating artifacts directory"
