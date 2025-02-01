@@ -10,8 +10,13 @@ phases:
       - sudo yum install -y nginx
   pre_build:
     commands:
-      - echo "Starting NGINX service"
-      - sudo systemctl enable nginx
+      - echo "Checking NGINX status..."
+      - sudo systemctl status nginx || true
+      - echo "Checking NGINX logs..."
+      - sudo journalctl -xeu nginx || true
+      - echo "Checking NGINX configuration..."
+      - sudo nginx -t || true
+      - echo "Restarting NGINX..."
       - sudo systemctl restart nginx
   build:
     commands:
