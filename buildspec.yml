@@ -4,17 +4,11 @@ phases:
   build:
     commands:
       - echo "Starting build phase..."
-      # List files in the current directory
-      - ls -l /tmp
-      - ls -l
-      # Create demo-app-files directory if it doesn't exist
-      - mkdir -p demo-app-files
-      # List files in demo-app-files directory
-      - ls -l demo-app-files/
-      # Check if the file exists before copying it
-      - if [ -f "my-artifact.tar.gz" ]; then cp my-artifact.tar.gz demo-app-files/; else echo "File not found!"; fi
-      # List the files again to see if the copy was successful
-      - ls -l demo-app-files/
+      - mkdir -p demo-app-files  # Ensure the directory exists
+      # Create a dummy artifact.zip file for testing
+      - echo "This is a test artifact" > demo-app-files/artifact.zip
+      # Verify that the file is created in the directory
+      - ls -l demo-app-files/  # List files inside demo-app-files
 
 artifacts:
   files:
