@@ -23,14 +23,15 @@ phases:
 
 artifacts:
   files:
-    - artifact.tar.gz  # Upload the artifact.tar.gz only
-  name: artifact.tar.gz  # Name of the artifact
-  discard-paths: yes  # Don't preserve directory structure
-  base-directory: .  # Current directory as base for the files to be included
+    - artifact.tar.gz  # Only include artifact.tar.gz in the artifact
+  base-directory: 'demo-app-files'  # This ensures only files inside 'demo-app-files' are included
+  discard-paths: yes  # Flatten the file structure (no directories inside the zip)
+  name: 'artifact.zip'  # This is the name of the artifact file
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/  # Path inside the bucket where artifact.tar.gz will go
+    path: demo-app-files/  # Path inside the bucket where the artifact will be uploaded
 
 cache:
   paths:
     - '/tmp/**/*'
+
