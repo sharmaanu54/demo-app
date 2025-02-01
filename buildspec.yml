@@ -13,9 +13,9 @@ phases:
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-     - echo "Creating artifact directory and assiging permissions"
+      - echo "Creating artifact directory and assiging permissions"
       - mkdir -p artifacts
-       - chmod 777 artifacts
+      - chmod 777 artifacts
       - echo "Copying index.html to artifacts directory"
       - cp index.html artifacts/
       - echo "Copying appspec.yml to artifacts directory"
