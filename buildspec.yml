@@ -15,22 +15,19 @@ phases:
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-      - echo "Listing current directory contents"
-      - sudo ls -l  # Ensure index.html is present in the current directory
-      # - echo "Checking /var/www/html/ directory"
-      # - sudo ls -ld /var/www/html/  # Verify the target directory
-      - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
-      - sudo cp index.html /var/www/html/
-      - ls -l /var/www/html
-      - echo "Checking /var/www/html contents..."
-      - ls -l /var/www/html
+      - echo "Creating artifacts directory"
+      - mkdir -p output  # Create a temporary output directory
+      - cp index.html output/
+      - cp appspec.yml output/
+      - cp -r scripts/ output/
+      - echo "Contents of output directory:"
+      - ls -l output/
   post_build:
     commands:
       - echo Configuring NGINX
 artifacts:
   files:
-    - index.html
-    - appspec.yml
-    - scripts/**
+    - output/**
+  base-directory: output  
   name: artifact
-  discard-paths: yes
+  discard-paths: no
