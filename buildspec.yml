@@ -32,3 +32,5 @@ artifacts:
     - index.html
     - appspec.yml
     - scripts/**
+  name: artifact.zip
+  base-directory: .
