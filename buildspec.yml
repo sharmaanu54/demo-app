@@ -12,7 +12,7 @@ phases:
     commands:
       - echo Starting NGINX service
       - sudo systemctl enable nginx
-      - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
+      - sudo systemctl start nginx || (echo "NGINX failed to start, checking logs..." && sudo journalctl -xeu nginx && exit 1)
   build:
     commands:
       - echo "Creating artifacts directory"
