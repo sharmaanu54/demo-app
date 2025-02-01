@@ -3,9 +3,11 @@ version: 0.2
 phases:
   install:
     commands:
-     - echo Installing NGINX
-      - sudo apt-get update
-      - sudo apt-get install -y nginx
+      - echo Installing NGINX
+      - sudo yum clean all
+      - sudo yum update -y
+      - sudo amazon-linux-extras enable nginx1
+      - sudo yum install -y nginx
   pre_build:
     commands:
       echo Starting NGINX service
@@ -13,32 +15,20 @@ phases:
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-      - echo "Creating artifacts directory in the root workspace"
-      - mkdir -p artifacts
-      - chmod 777 artifacts  # Fix: Ensure full access to `artifacts/`
-      - echo "Copying files to artifacts directory"
-      - cp index.html artifacts/
-      - cp appspec.yml artifacts/
-      - cp -r scripts artifacts/
-      - echo "Setting permissions for artifacts directory"
-      - chmod -R 755 artifacts/
-      - echo "Checking artifacts directory"
-      - ls -l artifacts/
+      - echo "Listing current directory contents"
+      - sudo ls -l  # Ensure index.html is present in the current directory
+      # - echo "Checking /var/www/html/ directory"
+      # - sudo ls -ld /var/www/html/  # Verify the target directory
+      - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
+      - sudo cp index.html /var/www/html/
+      - ls -l /var/www/html
+      - echo "Checking /var/www/html contents..."
+      - ls -l /var/www/html
   post_build:
     commands:
-      - echo "Build completed. Artifacts ready."
+      - echo Configuring NGINX
 artifacts:
   files:
-   - index.html
-    - appspec.yml  
-    - scripts/**  
-  # discard-paths: no  # Keep directory structure
-  # base-directory: artifacts  # Ensure files are picked up from the correct location
-    # - index.html
-  # discard-paths: yes  # This removes the source directory structure when uploading
-  # base-directory: /var/www/html  # The directory to be used as the base for artifact upload
-  # name: artifact.zip  # The name of the artifact (it will be a zip file in your case)
-  # s3:
-  #   bucket: anu-bucket01
-  #   key: code_output_demo_app/artifact.zip  # Path where artifact will be uploaded
-
+    - index.html
+    - appspec.yml
+    - scripts/**
