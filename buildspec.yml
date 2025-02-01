@@ -1,37 +1,30 @@
 version: 0.2
 
 phases:
-  pre_build:
-    commands:
-      - echo "Checking if the folder exists in the S3 bucket"
-      - aws s3 ls s3://anu-bucket01/demo-app-files/ || echo "Folder does not exist in S3."
-      - echo "Cleaning up S3 folder contents"
-      - aws s3 rm s3://anu-bucket01/demo-app-files/ --recursive || echo "Nothing to delete."
-      - echo "Folder contents after cleanup"
-      - aws s3 ls s3://anu-bucket01/demo-app-files/ || echo "No files remaining in folder."
-
   build:
     commands:
       - echo "Starting build phase..."
-      # List all files in the current directory for debugging
+      # List files in the current directory
+      - ls -l /tmp
       - ls -l
       # Create demo-app-files directory if it doesn't exist
       - mkdir -p demo-app-files
-      # List files in the demo-app-files directory
+      # List files in demo-app-files directory
       - ls -l demo-app-files/
-      # If the file exists in the current directory, copy it to demo-app-files
-      - cp my-artifact.tar.gz demo-app-files/  # This command will fail if the file is not present
+      # Check if the file exists before copying it
+      - if [ -f "my-artifact.tar.gz" ]; then cp my-artifact.tar.gz demo-app-files/; else echo "File not found!"; fi
+      # List the files again to see if the copy was successful
       - ls -l demo-app-files/
+
 artifacts:
   files:
-    - demo-app-files/artifact.tar.gz  # Only include artifact.tar.gz in the artifact
-  discard-paths: yes  # Flatten the file structure (no directories inside the zip)
-  name: 'artifact.zip'  # This is the name of the artifact file
+    - demo-app-files/artifact.tar.gz  # Path to the file inside demo-app-files
+  discard-paths: yes  # Flatten the directory structure
+  name: artifact.zip  # The name of the artifact
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/  # Path inside the bucket where the artifact will be uploaded
+    path: demo-app-files/  # Path inside the S3 bucket where the artifact will go
 
 cache:
   paths:
     - '/tmp/**/*'
-
