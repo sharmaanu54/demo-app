@@ -13,17 +13,17 @@ phases:
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-      - echo "Creating artifact directory and assiging permissions"
+      - echo "Creating artifacts directory in the root workspace"
       - mkdir -p artifacts
-      - chmod 777 artifacts
-      - echo "Copying index.html to artifacts directory"
+      - chmod 777 artifacts  # Fix: Ensure full access to `artifacts/`
+      - echo "Copying files to artifacts directory"
       - cp index.html artifacts/
-      - echo "Copying appspec.yml to artifacts directory"
       - cp appspec.yml artifacts/
-      - echo "Copying scripts folder to artifacts directory"
       - cp -r scripts artifacts/
-      - echo "Checking artifacts directory before upload"
-      - ls -R artifacts/
+      - echo "Setting permissions for artifacts directory"
+      - chmod -R 755 artifacts/
+      - echo "Checking artifacts directory"
+      - ls -l artifacts/
   post_build:
     commands:
       - echo "Build completed. Artifacts ready."
