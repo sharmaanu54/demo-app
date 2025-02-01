@@ -32,5 +32,5 @@ artifacts:
     - index.html
     - appspec.yml
     - scripts/**
-  name: artifact.zip
+  name: artifact
   discard-paths: yes
