@@ -12,9 +12,16 @@ phases:
 
   build:
     commands:
-     - mkdir -p demo-app-files  # Example: create the demo-app-files directory if not already created
-     - cp my-artifact.tar.gz demo-app-files/
-
+      - echo "Starting build phase..."
+      # List all files in the current directory for debugging
+      - ls -l
+      # Create demo-app-files directory if it doesn't exist
+      - mkdir -p demo-app-files
+      # List files in the demo-app-files directory
+      - ls -l demo-app-files/
+      # If the file exists in the current directory, copy it to demo-app-files
+      - cp my-artifact.tar.gz demo-app-files/  # This command will fail if the file is not present
+      - ls -l demo-app-files/
 artifacts:
   files:
     - demo-app-files/artifact.tar.gz  # Only include artifact.tar.gz in the artifact
