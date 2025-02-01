@@ -39,4 +39,4 @@ artifacts:
   base-directory: .  # If your files are in the root directory
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/artifact.zip  # Upload to the 'demo-app-files' folder in the bucket
+    path: demo-app-files/  # Upload to the 'demo-app-files' folder in the bucket
