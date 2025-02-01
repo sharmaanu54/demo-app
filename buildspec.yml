@@ -3,33 +3,32 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo Installing NGINX
+      - echo "Installing NGINX"
       - sudo yum clean all
       - sudo yum update -y
       - sudo amazon-linux-extras enable nginx1
       - sudo yum install -y nginx
+
   pre_build:
     commands:
-      pre_build:
-  commands:
-    - echo "Checking NGINX configuration..."
-    - sudo nginx -t || true  # Validate config
-    - echo "Starting NGINX..."
-    - sudo nginx || true  # Start NGINX manually
+      - echo "Checking NGINX configuration..."
+      - sudo nginx -t || true  # Validate NGINX config
+      - echo "Starting NGINX..."
+      - sudo nginx || true  # Start NGINX manually
 
   build:
     commands:
-      - echo "Creating artifacts directory"
-      - mkdir -p output  # Create a temporary output directory
-      - cp index.html output/ || echo "index.html not found!"
-      - cp appspec.yml output/ || echo "appspec.yml not found!"
-      - cp -r scripts/ output/ || echo "scripts/ not found!"
-      - echo "Contents of output directory:"
-      - ls -l output/  # Verify files are present before packaging
+      - echo "Copying index.html to /var/www/html/"
+      - sudo mkdir -p /var/www/html/
+      - sudo cp index.html /var/www/html/
+      - ls -l /var/www/html/
+
+  post_build:
+    commands:
+      - echo "Build completed successfully!"
 
 artifacts:
   files:
-    - '**/*'  # Include everything inside the output directory
-  base-directory: output  # Make sure CodeBuild looks inside "output" for artifacts
-  name: artifact
-  discard-paths: no  # Retain folder structure inside ZIP
+    - index.html
+    - appspec.yml
+    - scripts/**
