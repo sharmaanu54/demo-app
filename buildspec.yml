@@ -16,20 +16,20 @@ phases:
       - ls -al  # List files to verify they are in the correct place
       - echo "Listing files in 'scripts' directory"
       - ls -al scripts/  # List the files inside scripts/ folder
-      - echo "Creating zip file"
-      - zip -r artifact.zip index.html appspec.yml scripts/  # Create the zip file
-      - echo "Listing contents of artifact.zip"
-      - unzip -l artifact.zip  # Verify what’s inside the zip file
+      - echo "Creating tarball artifact.tar.gz"
+      - tar -czf artifact.tar.gz index.html appspec.yml scripts/  # Create the tarball
+      - echo "Listing contents of artifact.tar.gz"
+      - tar -tzf artifact.tar.gz  # Verify what’s inside the tarball
 
 artifacts:
   files:
-    - artifact.zip  # Ensure the artifact.zip is listed here
-  name: artifact.zip  # Use the name you want for the artifact
+    - artifact.tar.gz  # Upload the artifact.tar.gz only
+  name: artifact.tar.gz  # Name of the artifact
   discard-paths: yes  # Don't preserve directory structure
-  base-directory: .  # This is the base directory where files are being created
+  base-directory: .  # Current directory as base for the files to be included
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/  # Path inside the bucket where artifact.zip will go
+    path: demo-app-files/  # Path inside the bucket where artifact.tar.gz will go
 
 cache:
   paths:
