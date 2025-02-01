@@ -3,31 +3,33 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      # Ensure we clean up the previous build in S3
-      - echo "Removing old files from the S3 bucket"
-      - aws s3 rm s3://anu-bucket01/demo-app-files/ --recursive
-      - aws s3 ls s3://anu-bucket01/demo-app-files/  # Check if it's empty
+      - echo "Checking if the folder exists in the S3 bucket"
+      - aws s3 ls s3://anu-bucket01/demo-app-files/ || echo "Folder does not exist in S3."
+      - echo "Cleaning up S3 folder contents"
+      - aws s3 rm s3://anu-bucket01/demo-app-files/ --recursive || echo "Nothing to delete."
+      - echo "Folder contents after cleanup"
+      - aws s3 ls s3://anu-bucket01/demo-app-files/ || echo "No files remaining in folder."
 
   build:
     commands:
       - echo "Listing files in the current directory"
-      - ls -al  # Ensure your files are in the current directory
-      - echo "Listing files in the 'scripts' directory"
-      - ls -al scripts/  # List files inside scripts/
-      - echo "Create artifact.zip"
-      - zip -r artifact.zip index.html appspec.yml scripts/  # Zip the files
-      - echo "Verify contents of artifact.zip"
-      - unzip -l artifact.zip  # List contents of the zip before uploading
+      - ls -al  # List files to verify they are in the correct place
+      - echo "Listing files in 'scripts' directory"
+      - ls -al scripts/  # List the files inside scripts/ folder
+      - echo "Zipping files"
+      - zip -r artifact.zip index.html appspec.yml scripts/
+      - echo "Contents of artifact.zip"
+      - unzip -l artifact.zip  # Check that files are included correctly
 
 artifacts:
   files:
-    - artifact.zip  # Only include the artifact.zip in the output
+    - artifact.zip  # Upload the artifact.zip only
   name: artifact.zip
-  discard-paths: yes  # Don't keep the folder structure, files should be at the root of the zip
-  base-directory: .    # This is the current directory. Adjust if needed
+  discard-paths: yes  # Don't preserve the directory structure inside the ZIP
+  base-directory: .  # Current directory as base for the files to be included
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/  # This is the target folder in S3, not inside the zip
+    path: demo-app-files/  # Path in S3 where artifact.zip will be uploaded
 
 cache:
   paths:
