@@ -13,7 +13,7 @@ phases:
 artifacts:
   files:
     - demo-app-files/artifact.zip  # Path to the file inside demo-app-files
-  discard-paths: yes  # Flatten the directory structure
+  discard-paths: no  # Flatten the directory structure
   name: artifact.zip  # The name of the artifact
   s3:
     bucket: anu-bucket01
