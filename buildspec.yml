@@ -1,45 +1,33 @@
 version: 0.2
 
 phases:
-  install:
-    commands:
-      - echo "Installing NGINX"
-      - sudo yum clean all
-      - sudo yum update -y
-      - sudo amazon-linux-extras enable nginx1
-      - sudo yum install -y nginx
-
   pre_build:
     commands:
-      - echo "Checking NGINX configuration..."
-      - sudo nginx -t || true  # Validate NGINX config
-      - echo "Starting NGINX..."
-      - sudo nginx || true  # Start NGINX manually
+      # Ensure we clean up the previous build in S3
+      - echo "Removing old files from the S3 bucket"
+      - aws s3 rm s3://anu-bucket01/demo-app-files/ --recursive
+      - aws s3 ls s3://anu-bucket01/demo-app-files/  # Check if it's empty
 
   build:
     commands:
-      - echo "Copying index.html to /var/www/html/"
-      - sudo mkdir -p /var/www/html/
-      - sudo cp index.html /var/www/html/
-      - ls -l /var/www/html/
-
-  post_build:
-    commands:
-      - aws s3 rm s3://anu-bucket01/demo-app-files/ --recursive 
+      - echo "Listing files in the current directory"
+      - ls -al  # Ensure your files are in the current directory
+      - echo "Listing files in the 'scripts' directory"
+      - ls -al scripts/  # List files inside scripts/
+      - echo "Create artifact.zip"
+      - zip -r artifact.zip index.html appspec.yml scripts/  # Zip the files
+      - echo "Verify contents of artifact.zip"
+      - unzip -l artifact.zip  # List contents of the zip before uploading
 
 artifacts:
   files:
-     - index.html
-     - appspec.yml
-     - scripts/**  # Ensure all files inside scripts/ are included
+    - artifact.zip  # Only include the artifact.zip in the output
   name: artifact.zip
-  discard-paths: yes   # This ensures files are not stored with subdirectories in S3
-
-  # Specify the S3 path where the artifact.zip will be uploaded
-  base-directory: .  # If your files are in the root directory
+  discard-paths: yes  # Don't keep the folder structure, files should be at the root of the zip
+  base-directory: .    # This is the current directory. Adjust if needed
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/  # Upload to the 'demo-app-files' folder in the bucket
+    path: demo-app-files/  # This is the target folder in S3, not inside the zip
 
 cache:
   paths:
