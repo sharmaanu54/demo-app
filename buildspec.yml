@@ -33,3 +33,4 @@ artifacts:
      - appspec.yml
      - scripts/**  # Ensure all files inside scripts/ are included
   discard-paths: yes 
+  base-directory: .
