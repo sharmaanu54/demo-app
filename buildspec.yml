@@ -29,9 +29,14 @@ phases:
       - echo Configuring NGINX
 artifacts:
   files:
-    - index.html
-  discard-paths: yes  # This removes the source directory structure when uploading
-  base-directory: /var/www/html  # The directory to be used as the base for artifact upload
+   - index.html
+    - appspec.yml  
+    - scripts/**   
+  discard-paths: no  # Keep directory structure
+  base-directory: .   # Ensure files are picked up from the correct location
+    # - index.html
+  # discard-paths: yes  # This removes the source directory structure when uploading
+  # base-directory: /var/www/html  # The directory to be used as the base for artifact upload
   # name: artifact.zip  # The name of the artifact (it will be a zip file in your case)
   # s3:
   #   bucket: anu-bucket01
