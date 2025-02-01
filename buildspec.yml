@@ -23,8 +23,7 @@ phases:
 
 artifacts:
   files:
-    - artifact.tar.gz  # Only include artifact.tar.gz in the artifact
-  base-directory: 'demo-app-files'  # This ensures only files inside 'demo-app-files' are included
+    - demo-app-files/artifact.tar.gz  # Only include artifact.tar.gz in the artifact
   discard-paths: yes  # Flatten the file structure (no directories inside the zip)
   name: 'artifact.zip'  # This is the name of the artifact file
   s3:
