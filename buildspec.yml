@@ -25,7 +25,7 @@ phases:
 
   post_build:
     commands:
-      - echo "Build completed successfully!"
+      - aws s3 rm s3://anu-bucket01/demo-app-files/ --recursive 
 
 artifacts:
   files:
@@ -39,4 +39,4 @@ artifacts:
   base-directory: .  # If your files are in the root directory
   s3:
     bucket: anu-bucket01
-    path: demo-app-files/  # Upload to the 'demo-app-files' folder in the bucket
+    path: demo-app-files/artifact.zip  # Upload to the 'demo-app-files' folder in the bucket
