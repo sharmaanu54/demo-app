@@ -10,24 +10,22 @@ phases:
       - sudo yum install -y nginx
   pre_build:
     commands:
-      echo Starting NGINX service
+      - echo Starting NGINX service
       - sudo systemctl enable nginx
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
       - echo "Creating artifacts directory"
       - mkdir -p output  # Create a temporary output directory
-      - cp index.html output/
-      - cp appspec.yml output/
-      - cp -r scripts/ output/
+      - cp index.html output/ || echo "index.html not found!"
+      - cp appspec.yml output/ || echo "appspec.yml not found!"
+      - cp -r scripts/ output/ || echo "scripts/ not found!"
       - echo "Contents of output directory:"
-      - ls -l output/
-  post_build:
-    commands:
-      - echo Configuring NGINX
+      - ls -l output/  # Verify files are present before packaging
+
 artifacts:
   files:
-    - output/**
-  base-directory: output  
+    - '**/*'  # Include everything inside the output directory
+  base-directory: output  # Make sure CodeBuild looks inside "output" for artifacts
   name: artifact
-  discard-paths: no
+  discard-paths: no  # Retain folder structure inside ZIP
