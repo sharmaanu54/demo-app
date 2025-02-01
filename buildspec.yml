@@ -33,3 +33,10 @@ artifacts:
      - appspec.yml
      - scripts/**  # Ensure all files inside scripts/ are included
   name: artifact.zip
+  discard-paths: yes   # This ensures files are not stored with subdirectories in S3
+
+  # Specify the S3 path where the artifact.zip will be uploaded
+  base-directory: .  # If your files are in the root directory
+  s3:
+    bucket: anu-bucket01
+    path: demo-app-files/  # Upload to the 'demo-app-files' folder in the bucket
