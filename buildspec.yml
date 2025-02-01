@@ -12,12 +12,14 @@ phases:
 
   build:
     commands:
+      - echo "Installing zip"
+      - yum install -y zip  # Install zip (for Amazon Linux)
       - echo "Listing files in the current directory"
       - ls -al  # List files to verify they are in the correct place
       - echo "Listing files in 'scripts' directory"
       - ls -al scripts/  # List the files inside scripts/ folder
       - echo "Zipping files"
-      - zip -r artifact.zip index.html appspec.yml scripts/
+      - zip -r artifact.zip index.html appspec.yml scripts/  # Zip the files
       - echo "Contents of artifact.zip"
       - unzip -l artifact.zip  # Check that files are included correctly
 
