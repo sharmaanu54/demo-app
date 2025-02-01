@@ -13,18 +13,19 @@ phases:
       - sudo systemctl start nginx || (echo "NGINX failed to start" && sudo systemctl status nginx)
   build:
     commands:
-      - echo "Listing current directory contents"
-      - sudo ls -l  # Ensure index.html is present in the current directory
-      # - echo "Checking /var/www/html/ directory"
-      # - sudo ls -ld /var/www/html/  # Verify the target directory
-      - sudo mkdir -p /var/www/html/  # Create the directory if it doesn't exist
-      - sudo cp index.html /var/www/html/
-      - ls -l /var/www/html
-      - echo "Checking /var/www/html contents..."
-      - ls -l /var/www/html
+     - echo "Creating artifact directory"
+      - mkdir -p artifacts
+      - echo "Copying index.html to artifacts directory"
+      - cp index.html artifacts/
+      - echo "Copying appspec.yml to artifacts directory"
+      - cp appspec.yml artifacts/
+      - echo "Copying scripts folder to artifacts directory"
+      - cp -r scripts artifacts/
+      - echo "Checking artifacts directory before upload"
+      - ls -R artifacts/
   post_build:
     commands:
-      - echo Configuring NGINX
+      - echo "Build completed. Artifacts ready."
 artifacts:
   files:
    - index.html
@@ -32,7 +33,7 @@ artifacts:
     - scripts/install_nginx.sh
     - scripts/start_nginx.sh   
   discard-paths: no  # Keep directory structure
-  base-directory: /var/www/html   # Ensure files are picked up from the correct location
+  base-directory: artifacts  # Ensure files are picked up from the correct location
     # - index.html
   # discard-paths: yes  # This removes the source directory structure when uploading
   # base-directory: /var/www/html  # The directory to be used as the base for artifact upload
