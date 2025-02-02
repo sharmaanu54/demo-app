@@ -1,24 +1,19 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      - echo Installing NGINX
+      - sudo apt-get update
+      - sudo apt-get install nginx -y
+      
   build:
     commands:
-      - echo "Starting build phase..."
-      - mkdir -p demo-app-files  # Ensure the directory exists
-      # Create a dummy artifact.zip file for testing
-      - echo "This is a test artifact" > demo-app-files/artifact.zip
-      # Verify that the file is created in the directory
-      - ls -l demo-app-files/  # List files inside demo-app-files
-
+      - echo Build started on date
+      - cp index.html /var/www/html/
+  post_build:
+    commands:
+      - echo Configuring NGINX
 artifacts:
   files:
-    - demo-app-files/artifact.zip  # Path to the file inside demo-app-files
-  discard-paths: yes  # Flatten the directory structure
-  name: artifact.zip  # The name of the artifact
-  s3:
-    bucket: anu-bucket01
-    path: demo-app-files/  # Path inside the S3 bucket where the artifact will go
-
-cache:
-  paths:
-    - '/tmp/**/*'
+      - /var/www/html/index.html
